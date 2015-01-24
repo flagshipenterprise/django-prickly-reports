@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load bootstrap %}
+{% load kwacros %}
+
+{% block title %}Year Detailed Report{% endblock %}
+
+{% kwacro make_subsection title total_data data %}
+    <tr>
+        <td style="text-align: left"><strong>{{ title }}</strong></td>
+        {% for col in total_data %}<td><strong>{{ col }}</strong></td>{% endfor %}
+    </tr>
+    {% for account, cols in data.iteritems %}
+    <tr><td>{{ account.get_full_name }}</td>{% for col in cols %}<td>{{ col }}</td>{% endfor %}</tr>
+    {% endfor %}
+{% endkwacro %}
+
+{% block content %}
+<div class="row">
+    <div class="btn-group pull-left">
+        <a class="btn btn-info" href="{% url 'ta_year_detail_report' prev_year %}"><i class="glyphicon glyphicon-arrow-left"></i> Prev Year <i class="glyphicon glyphicon-calendar"></i></a>
+    </div>
+    <div class="btn-group pull-right">
+        <a class="btn btn-info" href="{% url 'ta_year_detail_report' next_year %}"><i class="glyphicon glyphicon-calendar"></i> Next Year <i class="glyphicon glyphicon-arrow-right"></i></a>
+    </div>
+    <h2 class="text-center">TA Year Detailed Report for {{ budget_year }}</h2>
+</div>
+
+<div class="container">
+    <p class="pull-right"><a class="btn btn-primary" href="{% url 'export_year_detail_report_csv' budget_year %}">Export as CSV</a></p>
+
+    {% for subsection in report %}
+        <h3>{{ subsection.title }}</h3>
+        <table class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                    {% for month_header in months_header %}
+                    <th>{{ month_header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% usekwacro make_subsection 'Total Direct TA' subsection.total_direct subsection.direct %}
+                {% usekwacro make_subsection 'Total Travel' subsection.total_travel subsection.travel %}
+                {% usekwacro make_subsection 'Total Preparation' subsection.total_prep subsection.prep %}
+                {% usekwacro make_subsection 'Total '|add:subsection.title subsection.grand_total subsection.total %}
+            </tbody> 
+        </table>
+    {% endfor %}
+</div>
+{% endblock %}

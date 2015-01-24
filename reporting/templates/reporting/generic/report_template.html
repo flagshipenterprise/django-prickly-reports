@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ report.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    {#} Title {#}
+    <h1>{{ report.title }}</h1>
+
+    <div class="row">
+
+        {#} Filter form {#}
+        {% if report.get_filters %}
+        <div class="col-sm-3">
+            {% include form_template %}
+        </div>
+        {% endif %}
+
+        {#} Report table {#}
+        <div class="{% if report.get_filters %}col-sm-9{% else %}col-sm-12{% endif %}">
+            {% include table_template %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

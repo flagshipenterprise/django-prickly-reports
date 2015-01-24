@@ -1,0 +1,17 @@
+{% load bootstrap %}
+{% load widget_tweaks %}
+
+<form method="GET" class="filtering-select">
+
+    {# Loop over report forms #}
+    {% for form in report.get_filter_forms %}
+
+        {% with form as form %}
+        {% include "reporting/generic/report_filter_form_template.html" %}
+        {% endwith %}
+
+    {% endfor %}
+
+    <input type="submit" class="btn btn-primary btn-block" value="Filter" />
+
+</form>

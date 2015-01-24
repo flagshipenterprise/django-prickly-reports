@@ -1,0 +1,54 @@
+{% load humanize %}
+
+<div class="col-md-8 col-md-offset-2">
+    <table class="table table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Total Sales</th>
+                <th>Total Profit</th>
+                <th>Full Time<br/>Equivalent Employees</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for month in cu_report %}
+            <tr>
+                {% if month.month == 'Total' %}
+                <td><strong>Total</strong></td>
+                {% else %}
+                <td><strong>{{ month.month|date:"M y" }}</strong></td>
+                {% endif %}
+                <td>${{ month.total_sales }}</td>
+                <td>${{ month.total_profit }}</td>
+                <td>{{ month.total_ftes }}</td>
+            </tr>
+            {% endfor %}
+        </tbody> 
+    </table>
+</div>
+
+<table class="table table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>Client</th>
+            <th>Sales Last Month</th>
+            <th>Profit Last Month</th>
+                <th>Full Time<br/>Equivalent Employees</th>
+            <th>Month</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for update in client_updates %}
+        {% if update.response %}
+        <tr>
+            <td>{{ update.client }}</td>
+            <td>${{ update.response.sales_last_month }}</td>
+            <td>${{ update.response.profit_last_month }}</td>
+            <td>{{ update.response.ftes }}</td>
+            <td>{{ update.month|date:"m/y" }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody> 
+</table>
+

@@ -1,0 +1,47 @@
+{% load humanize %}
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Client Name</th>
+            <th>Original Loan Amount</th>
+            <th> Balance after {{ loans.last_month }} Payments</th>
+            <th>{{ loans.last_month }} Loan Payments</th>
+            <th>{{ loans.last_month }} Payments Interest</th>
+            <th>{{ loans.last_month }} Payments Principal</th>
+            <th>Original Loan Date</th>
+            <th>Loan Term in Months</th>
+            <th>Interest<br/>Rate</th>
+            <th>Funding Source</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loan in loans %}
+        {% with missed_count=loan.get_missing_payments_count %}
+
+        {% if loan.date_written_off %}
+        <tr class="inactive">
+        {% elif missed_count == 1 %}
+        <tr class="warning">
+        {% elif missed_count >= 2 %}
+        <tr class="danger">
+        {% else %}
+        <tr>
+        {% endif %}
+        {% endwith %}
+
+            <td>{{ loan.client }}</td>
+            <td>${{ loan.amount|floatformat:"0"|intcomma }}</td>
+            <td>${{ loan.last_months_payments.balance|floatformat:"2"|intcomma }}</td>
+            <td>${{ loan.last_months_payments.payment|floatformat:"2"|intcomma }}</td>
+            <td>${{ loan.last_months_payments.interest|floatformat:"2"|intcomma }}</td>
+            <td>${{ loan.last_months_payments.principal|floatformat:"2"|intcomma }}</td>
+
+            <td class="date-col">{{ loan.start_date }}</td>
+            <td>{{ loan.term }}</td>
+            <td>{{ loan.interest_rate }}</td>
+            <td>{{ loan.funding_source }}</td>
+        </tr>
+        {% endfor %}
+    </tbody> 
+</table>

@@ -1,0 +1,23 @@
+{% load bootstrap %}
+{% load widget_tweaks %}
+
+{# Render the form with a delete button #}
+{% if form.delete %}
+<div class="row">
+    <div class="col-sm-10" style="padding-right: 1px">
+        {{ form|bootstrap_inline }}
+    </div>
+    <div class="col-sm-2" style="padding-left: 1px">
+        <button type="submit"
+                name="delete"
+                value="{{ form.delete.filter }}.{{ form.delete.index }}"
+                class="btn btn-block btn-danger">
+            <span class="glyphicon glyphicon glyphicon-remove"></span>
+        </button>
+    </div>
+</div>
+
+{# ... Or not #}
+{% else %}
+{{ form|bootstrap }}
+{% endif %}

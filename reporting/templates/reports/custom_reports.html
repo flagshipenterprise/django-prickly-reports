@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% load widget_tweaks %}
+
+{% block title %}Custom Loan Reports{% endblock %}
+
+{% block head %}
+<style>
+.filtering-container {
+    display: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="btn-toolbar pull-right mt20">
+        {% comment %}
+        <a class="btn btn-danger"
+            href="{% url 'custom_reports' kind %}">
+            Start Over
+        </a>
+        {% endcomment %}
+        {% if loans or client_updates or time_entries %}
+        <a class="btn btn-success"
+            href="{{ csv_export_url }}">
+            Export as CSV
+        </a>
+        {% endif %}
+    </div>
+    <h1>Custom Loan Reports</h1>
+    <p class="lead">Filter By:</p>
+</div>
+<div class="row filtering-container">
+    <div class="col-md-3">
+        <form method="POST" class="filtering-select">{% csrf_token %}
+            {% if kind == 'client-updates' %}
+
+            <legend>Client Update Attributes</legend>
+
+            <table class="table table-condensed mbn">
+                <tbody>
+                    <tr>
+                        <td style="width: 50%; border-top: none">
+                            <label>Date Range Start</label>
+                            {{ form.cu_start_date|add_class:"form-control" }}
+                        </td>
+                        <td style="width: 50%; border-top: none">
+                            <label>Date Range End</label>
+                            {{ form.cu_end_date|add_class:"form-control" }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <label>Client</label>
+                {{ form.cu_client|attr:"data-width:100%" }}
+            </div>
+
+            <label>Numerical Attribute</label>
+            <table class="table table-condensed mbn">
+                <tbody>
+                    {% for attribute in cu_attributes %}
+                    <tr>
+                        <td colspan="2">{{ attribute.cu_property }} {{ attribute.cu_operator }} {{ attribute.cu_propvalue }}</td>
+                        <td>
+                            <button type="submit" name="remove_cu_attribute" value="{{ attribute.raw }}" class="btn btn-xs btn-danger">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td style="width: 40%; border-top: none">
+                            {{ form.cu_property|attr:"data-width:100%" }}
+                        </td>
+                        <td style="width: 20%; border-top: none">
+                            {{ form.cu_operator|attr:"data-width:100%" }}
+                        </td>
+                        <td style="width: 30%; border-top: none">
+                            {{ form.cu_propvalue|add_class:"form-control" }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-block" name="filter" value="Filter" />
+            </div>
+
+            <hr />
+            {% endif %}
+
+            {% if kind == 'technical-assistance' %}
+            <legend>Time Tracking Attributes</legend>
+
+            <table class="table table-condensed mbn">
+                <tbody>
+                    <tr>
+                        <td style="width: 50%; border-top: none">
+                            <label>Date Range Start</label>
+                            {{ form.ta_start_date|add_class:"form-control" }}
+                        </td>
+                        <td style="width: 50%; border-top: none">
+                            <label>Date Range End</label>
+                            {{ form.ta_end_date|add_class:"form-control" }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <label>Staff Member</label>
+                {{ form.ta_staff_member|attr:"data-width:100%" }}
+            </div>
+
+            <div class="form-group">
+                <label>Client</label>
+                {{ form.ta_client|attr:"data-width:100%" }}
+            </div>
+
+            {% if request.user.organization.enable_loans_module %}
+            <div class="form-group">
+                <label>Funding Source</label>
+                {{ form.ta_funding_source|attr:"data-width:100%" }}
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label>Pre Loan or Post Loan</label>
+                {{ form.ta_pre_loan_or_post_loan|attr:"data-width:100%" }}
+            </div>
+
+
+            <label>Numerical Attribute</label>
+            <table class="table table-condensed mbn">
+                <tbody>
+                    {% for attribute in ta_attributes %}
+                    <tr>
+                        <td colspan="2">{{ attribute.ta_property }} {{ attribute.ta_operator }} {{ attribute.ta_propvalue }}</td>
+                        <td>
+                            <button type="submit" name="remove_ta_attribute" value="{{ attribute.raw }}" class="btn btn-xs btn-danger">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td style="width: 40%; border-top: none">
+                            {{ form.ta_property|attr:"data-width:100%" }}
+                        </td>
+                        <td style="width: 20%; border-top: none">
+                            {{ form.ta_operator|attr:"data-width:100%" }}
+                        </td>
+                        <td style="width: 30%; border-top: none">
+                            {{ form.ta_propvalue|add_class:"form-control" }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-block" name="filter" value="Filter" />
+            </div>
+
+            <hr />
+            {% endif %}
+
+            {% if request.user.organization.enable_loans_module %}
+            <legend>Loan Attributes</legend>
+
+            <table class="table table-condensed mbn">
+                <tbody>
+                    <tr>
+                        <td style="width: 50%; border-top: none">
+                            <label>Start Date</label>
+                            {{ form.loan_start_date|add_class:"form-control" }}
+                        </td>
+                        <td style="width: 50%; border-top: none">
+                            <label>End Date</label>
+                            {{ form.loan_end_date|add_class:"form-control" }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <label>Client</label>
+                {{ form.loan_client|attr:"data-width:100%" }}
+            </div>
+
+            <div class="form-group">
+                <label>Funding Source</label>
+                {{ form.loan_funding_source|attr:"data-width:100%" }}
+            </div>
+
+            <div class="form-group">
+                <label>County</label>
+                {{ form.loan_county|attr:"data-width:100%" }}
+            </div>
+
+            <label>Tag</label>
+            <table class="table table-condensed mbn">
+                <tbody>
+                    {% for tag in loan_tags %}
+                    <tr>
+                        <td>{{ tag }}</td>
+                        <td>
+                            <button type="submit" name="remove_loan_tag" value="{{ tag.pk }}" class="btn btn-xs btn-danger">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="2" style="border-top: none">
+                            {{ form.loan_tag|attr:"data-width:100%" }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <label>Numerical Attribute</label>
+            <table class="table table-condensed mbn">
+                <tbody>
+                    {% for attribute in loan_attributes %}
+                    <tr>
+                        <td colspan="2">{{ attribute.loan_property }} {{ attribute.loan_operator }} {{ attribute.loan_propvalue }}</td>
+                        <td>
+                            <button type="submit" name="remove_loan_attribute" value="{{ attribute.raw }}" class="btn btn-xs btn-danger">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td style="width: 40%; border-top: none">
+                            {{ form.loan_property|attr:"data-width:100%" }}
+                        </td>
+                        <td style="width: 20%; border-top: none">
+                            {{ form.loan_operator|attr:"data-width:100%" }}
+                        </td>
+                        <td style="width: 30%; border-top: none">
+                            {{ form.loan_propvalue|add_class:"form-control" }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-block" name="filter" value="Filter" />
+            </div>
+            {% endif %}
+
+        </form>
+    </div>
+    <div class="col-md-9">
+        {% if total_results > 0 %}
+        <h3 class="pull-right">Total Results: {{ total_results }}</h3>
+        {% endif %}
+        {% if loans %}
+            {% include "reports/_custom_loan_output.html" %}
+        {% elif time_entries %}
+            {% include "reports/_custom_technical_assistance_output.html" %}
+        {% elif client_updates %}
+            {% include "reports/_custom_client_updates_output.html" %}
+        {% else %}
+            {% if need_filters_set %}
+                <h3 class="text-center">Configure filters to the left to search.</h3>
+            {% else %}
+                <h3 class="text-center">Your search did not return any results.</h3>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
