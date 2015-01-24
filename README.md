@@ -3,6 +3,7 @@ Reporting
 =========
 
 Reporting is a simple, filterable report generator.
+Named after a fun adjective because why not?
 
 
 Quick Start
