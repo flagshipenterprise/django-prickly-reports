@@ -10,7 +10,7 @@ Quick Start
 
 1. Add "reporting" to your INSTALLED\_APPS.
     
-    # settings.py
+    ### settings.py
 
     INSTALLED_APPS = (
         ...
@@ -19,7 +19,7 @@ Quick Start
 
 2. In one of your apps, import the reporting module and make a report in "yourapp/reports.py"
 
-    # yourapp/reports.py
+    ### yourapp/reports.py
 
     from reporting.base import Report
     from reporting import filters
