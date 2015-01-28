@@ -136,7 +136,8 @@ class Filter(object):
             return {self.filter_state_names[0] % name: data}
 
     def apply_filter(self, queryset, data):
-        return queryset.filter("%s=%s" % (self.filter_field, data))
+        filterspec = {self.filter_field: data}
+        return queryset.filter(**filterspec)
 
     def apply_filter_set(self, queryset, data_set):
 

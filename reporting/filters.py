@@ -32,7 +32,8 @@ class ChoiceFilter(Filter):
             label=self.label)
 
     def apply_filter(self, queryset, data):
-        return queryset.filter("%s=%s" % (self.filter_field, data))
+        filterspec = {self.filter_field: data}
+        return queryset.filter(**filterspec)
 
 
 class MultipleChoiceFilter(ChoiceFilter):
@@ -46,7 +47,8 @@ class MultipleChoiceFilter(ChoiceFilter):
     def apply_filter(self, queryset, data):
         q = Q()
         for value in data:
-            q = q | Q("%s=%s" % (self.filter_field, data))
+            filterspec = {self.filter_field: data}
+            q = q | Q(**filterspec)
         return queryset.filter(q)
 
 
