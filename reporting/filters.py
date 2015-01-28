@@ -48,7 +48,7 @@ class MultipleChoiceFilter(ChoiceFilter):
     def apply_filter(self, queryset, data):
         q = Q()
         for value in data:
-            filterspec = {self.filter_field: data}
+            filterspec = {self.filter_field: value}
             q = q | Q(**filterspec)
         return queryset.filter(q)
 
