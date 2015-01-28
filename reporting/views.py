@@ -354,7 +354,7 @@ def export_year_detail_report_csv(request, budget_year):
 
 
 
-# #################### IT'S THE MOTHERFUCKING NEW SHIT!!!! ################## #
+# #################### IT'S THE [Um] NEW [...stuff] !!!! ################## #
 
 from django.views.generic.base import TemplateResponseMixin, ContextMixin
 from django.views.generic.edit import ProcessFormView

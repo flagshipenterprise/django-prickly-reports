@@ -31,6 +31,9 @@ class ChoiceFilter(Filter):
             choices=self.choices,
             label=self.label)
 
+    def apply_filter(self, queryset, data):
+        return queryset.filter("%s=%s" % (self.filter_field, data))
+
 
 class MultipleChoiceFilter(ChoiceFilter):
     form_field_class = forms.MultipleChoiceField
@@ -39,6 +42,12 @@ class MultipleChoiceFilter(ChoiceFilter):
     @staticmethod
     def get_data(name, filter_states, index=None):
         return filter_states.getlist(name, None)
+
+    def apply_filter(self, queryset, data):
+        q = Q()
+        for value in data:
+            q = q | Q("%s=%s" % (self.filter_field, data))
+        return queryset.filter(q)
 
 
 class CharFilter(Filter):
@@ -52,6 +61,13 @@ class DateFilter(Filter):
 class NumericComparisonFilter(Filter):
     form_field_class = SelectNumericComparisonField
     filter_state_names = ['%s_0', '%s_1', '%s_2', ]
+    comparisons = {
+        'lt': lambda a, b: a < b,
+        'lte': lambda a, b: a <= b,
+        'eq': lambda a, b: a == b,
+        'gte': lambda a, b: a >= b,
+        'gt': lambda a, b: a > b,
+    }
 
     def __init__(self, attrnames, operators=None, **kwargs):
         super(NumericComparisonFilter, self).__init__(**kwargs)
@@ -62,3 +78,11 @@ class NumericComparisonFilter(Filter):
             required=(self.required and not self.filter_set),
             attrnames=self.attrnames,
             label=self.label)
+
+    def apply_filter(self, queryset, data):
+        attr_name, attr_operation, attr_value = data
+
+        # Build a filter based on the attribute filter data
+        op = '' if attr_operation == 'eq' else '__%s' % attr_operation
+        filterspec = {'%s%s' % (attr_name, op): attr_value}
+        return queryset.filter(**filterspec)

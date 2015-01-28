@@ -17,6 +17,7 @@ class Filter(object):
     form_field_class = None
     form_field_widget = None
     filter_state_names = ['%s', ]
+    filter_field = ''
 
     def __init__(self,
                  default=None,
@@ -24,7 +25,8 @@ class Filter(object):
                  label=None,
                  form_field_class=None,
                  form_field_widget=None,
-                 filter_set=False):
+                 filter_set=False,
+                 filter_field=None):
         self.default = default
         self.required = required
         self.label = label
@@ -32,6 +34,7 @@ class Filter(object):
         self.form_field_widget = form_field_widget or self.form_field_widget
         self.order = Filter._order.next()
         self.filter_set = filter_set
+        self.filter_field = fitler_field or self.filter_field
 
     def get_form_field(self):
         """
@@ -97,7 +100,7 @@ class Filter(object):
 
             # Get the dict of states for this filter set element
             state = filter_states[i]
-            filter_dict = { }
+            filter_dict = {}
             for i in range(0, len(filter_state_names)):
                 filter_dict.update({filter_state_names[i] % name: state[i]})
 
@@ -113,7 +116,7 @@ class Filter(object):
 
     def get_filter_state_from_data(self, name, data):
         """
-        Another nasty little bitch. This one (if not overridden) takes some
+        Another nasty little bit. This one (if not overridden) takes some
         data and encodes it, using the filter state names, to be a valid
         filter_state which would return the original data if passed to get_data
 
@@ -131,6 +134,16 @@ class Filter(object):
             return state
         else:
             return {self.filter_state_names[0] % name: data}
+
+    def apply_filter(self, queryset, data):
+        return queryset.filter("%s=%s" % (self.filter_field, data))
+
+    def apply_filter_set(self, queryset, data_set):
+
+        # Apply the filter to the queryset based on each entry in the data set
+        for data in data_set:
+            queryset = self.apply_filter(queryset, data)
+        return queryset
 
 
 class Report(object):
@@ -214,7 +227,6 @@ class Report(object):
             if attr.filter_set:
 
                 # Get the new-set element form
-                #yield attr.get_form_class(name)()
                 form = attr.get_form_class(name)()
                 form.name = name
                 yield form
@@ -234,7 +246,6 @@ class Report(object):
                     form.delete = {
                         'filter': name,
                         'index': i}
-                    #yield form
 
                     form.name = name
                     yield form
@@ -242,7 +253,6 @@ class Report(object):
             # If it ain't a filter set, just get it's form class and render it
             # with the filter state data
             else:
-                #yield attr.get_form_class(name)(data=self.filter_states)
                 form = attr.get_form_class(name)(data=self.filter_states)
                 form.name = name
                 yield form
