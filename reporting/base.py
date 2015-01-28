@@ -34,7 +34,7 @@ class Filter(object):
         self.form_field_widget = form_field_widget or self.form_field_widget
         self.order = Filter._order.next()
         self.filter_set = filter_set
-        self.filter_field = fitler_field or self.filter_field
+        self.filter_field = filter_field or self.filter_field
 
     def get_form_field(self):
         """
