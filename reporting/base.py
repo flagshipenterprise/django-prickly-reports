@@ -292,6 +292,9 @@ class Report(object):
             # Apply this filter
             queryset = self.apply_filter(queryset, name)
 
+        # Return the filtered queryset
+        return queryset
+
     def get_queryset(self):
         return []
 
