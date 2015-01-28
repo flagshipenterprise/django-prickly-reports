@@ -3,6 +3,7 @@ import dateutil
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from django.db.models.fields import BLANK_CHOICE_DASH
+from django.db.models import Q
 from django.http import QueryDict
 from reporting.base import Filter
 from reporting.fields import SelectNumericComparisonField
