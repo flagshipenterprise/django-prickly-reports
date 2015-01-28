@@ -266,12 +266,21 @@ class Report(object):
 
     def apply_filter(self, queryset, name):
         f = self.get_filter(name)
+
+        # If it's not a filterset, just get the regular data and apply it
         if not f.filter_set:
             data = f.get_data(name, self.filter_states)
-            return f.apply_filter(queryset, data)
+            if data:
+                return f.apply_filter(queryset, data)
+
+        # Otherwise, get the full data set and apply it
         else:
             data_set = f.get_data_set(name, self.filter_states)
-            return f.apply_filter_set(queryset, data_set)
+            if len(data_set) > 0:
+                return f.apply_filter_set(queryset, data_set)
+
+        # If we weren't able to apply the filter, return the raw queryset
+        return queryset
 
     def get_queryset(self):
         return []
