@@ -282,6 +282,16 @@ class Report(object):
         # If we weren't able to apply the filter, return the raw queryset
         return queryset
 
+    def apply_filters(self, queryset, names=None):
+        for name, f in self.get_filters().iteritems():
+
+            # Only apply this filter if it's selected
+            if names and name not in names:
+                continue
+
+            # Apply this filter
+            queryset = self.apply_filter(queryset, name)
+
     def get_queryset(self):
         return []
 
