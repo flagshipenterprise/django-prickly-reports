@@ -264,6 +264,15 @@ class Report(object):
     def get_headers(self):
         return self.headers
 
+    def apply_filter(self, queryset, name):
+        f = self.get_filter(name)
+        if not f.filter_set:
+            data = f.get_data(name, self.filter_states)
+            return f.apply_filter(queryset, data)
+        else:
+            data_set = attr.get_data_set(name, self.filter_states)
+            return f.apply_filter_set(queryset, data_set)
+
     def get_queryset(self):
         return []
 
