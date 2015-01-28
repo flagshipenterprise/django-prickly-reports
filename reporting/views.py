@@ -363,13 +363,6 @@ from django.views.generic.edit import ProcessFormView
 class ReportMixin(object):
     report_class = None
 
-    """
-    def __init__(self, report_class=None, *args, **kwargs):
-        if report_class:
-            self.report_class = report_class
-        return super(ReportMixin, self).__init__(*args, **kwargs)
-    """
-
     def get_report(self):
         return self.get_report_class()(
             filter_states=self.get_filter_states())

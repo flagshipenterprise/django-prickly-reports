@@ -300,7 +300,7 @@ class Report(object):
     def get_row(self, item):
         """
         This can return a list for simple data that doesn't need special
-        template rendering, or a dict for more complex data where indiviudal
+        template rendering, or a dict for more complex data where individual
         fields will need to be rendered specially.
         """
         return []

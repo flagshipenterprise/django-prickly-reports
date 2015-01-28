@@ -86,6 +86,7 @@ class NumericComparisonFilter(Filter):
         attr_name, attr_operation, attr_value = data
 
         # Build a filter based on the attribute filter data
+        field_name = '' if not self.filter_field else '%s__' % self.filter_field
         op = '' if attr_operation == 'eq' else '__%s' % attr_operation
-        filterspec = {'%s%s' % (attr_name, op): attr_value}
+        filterspec = {'%s%s%s' % (field_name, attr_name, op): attr_value}
         return queryset.filter(**filterspec)
