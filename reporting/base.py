@@ -209,8 +209,7 @@ class Report(object):
     def get_filters(self):
         """
         Return a list of all the names and attributes on this report instance
-        which have a base class of Filter. Did this in a list comprehension,
-        but it was incomprehensible, so I unpacked it into a loop.
+        which have a base class of Filter.
         """
         filters = []
         for name in dir(self):
@@ -283,7 +282,7 @@ class Report(object):
         return queryset
 
     def apply_filters(self, queryset, names=None):
-        for name, f in self.get_filters().iteritems():
+        for name, f in self.get_filters():
 
             # Only apply this filter if it's selected
             if names and name not in names:
