@@ -79,7 +79,7 @@ class Filter(object):
         if delete:
             n, i = delete.split('.')
             if n == name:
-                delete_index = int(i)
+                delete_index = int(i) + 1
 
         # Zip together all the lists of filter state values. This gives us a
         # list of tuples of filter state fields. Ugly but necessary in case we
