@@ -119,62 +119,6 @@ def update_getlist(getlist, updates):
             del getlist[kind + '_attribute']
 
 
-@login_required
-def aggregate_reports(request):
-
-    if request.user.role == Account.CLIENT:
-        raise PermissionDenied()
-
-    today = date_.today_()
-
-    funding_sources = FundingSource.objects.all().prefetch_related('loans')
-    for source in funding_sources:
-        source.aggregate_report = source.get_aggregate_report(today)
-
-    loan_aggregate_report = Loan.objects.get_aggregate_report(today)
-
-    total_loan_count = Loan.objects.count()
-
-    all_tags = Tag.objects.all()
-    loan_tags = []
-    loans_by_tag_points = []
-
-    tag_counts = []
-    for tag in all_tags:
-        tag_count = tag.loans.count()
-        tag_counts.append({
-            'name': tag.name,
-            'count': tag_count,
-            'percent': tag_count * 1.0 / total_loan_count * 100
-        })
-
-    for i, tag in enumerate(all_tags):
-        loan_tags.append([i, tag.name])
-        loans_by_tag_points.append(
-            [[i, tag.loans.count() * 1.0 / total_loan_count * 100]]
-        )
-
-    nxt = len(loan_tags)
-    loan_tags.append([nxt, 'Having One or More'])
-    count = 0
-    for loan in Loan.objects.all().select_related('tags').all():
-        if loan.tags.count() > 0:
-            count += 1
-    tag_counts.append({
-        'name': 'Having One or More',
-        'count': count,
-        'percent': count * 1.0 / total_loan_count * 100
-    })
-
-    loans_by_tag_points.append([[nxt, count * 1.0 / total_loan_count * 100]])
-    loan_tags_json = json.dumps(loan_tags)
-    points = reports_queries.get_aggregate_report_graph_points()
-
-    county_report = loan_county_report()
-
-    return render(request, 'reports/aggregate_reports.html', locals())
-
-
 def get_ordered_months_header(first_month):
     months_header = ['']
 
