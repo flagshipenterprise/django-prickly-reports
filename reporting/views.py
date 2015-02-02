@@ -37,6 +37,7 @@ from accounts.mixins import (
 from loans.queries import county_report as loan_county_report
 
 
+"""
 def reports_dashboard(request):
     if (not request.user.is_authenticated()) or (request.user.role <= Account.EMPLOYEE):
         raise PermissionDenied
@@ -48,7 +49,7 @@ def reports_dashboard(request):
         'pre_loan_hours': dashboard.pre_loan_hours,
         'days_from_initial_contact': dashboard.days_from_initial_contact
     })
-
+"""
 
 def getlist_to_querystring(getlist):
     variables = []
