@@ -37,87 +37,12 @@ from accounts.mixins import (
 from loans.queries import county_report as loan_county_report
 
 
-"""
-def reports_dashboard(request):
-    if (not request.user.is_authenticated()) or (request.user.role <= Account.EMPLOYEE):
-        raise PermissionDenied
-
-    return render(request, 'reports/dashboard.html', {
-        'growth_rates': dashboard.growth_rates,
-        'default_rates': dashboard.default_rates,
-        'delinquency_rates': dashboard.delinquency_rates,
-        'pre_loan_hours': dashboard.pre_loan_hours,
-        'days_from_initial_contact': dashboard.days_from_initial_contact
-    })
-"""
-
 def getlist_to_querystring(getlist):
     variables = []
     for name, values in getlist.iteritems():
         for value in values:
             variables.append('%s=%s' % (name, str(value)))
     return '?' + '&'.join(variables)
-
-
-def update_getlist(getlist, updates):
-    # Repopulate fields that are not related to models (and don't have a pk)
-    for field_name in [
-        'cu_start_date', 'cu_end_date',
-        'ta_start_date', 'ta_end_date',
-        'ta_pre_loan_or_post_loan',
-        'loan_start_date', 'loan_end_date', 'loan_county',
-    ]:
-        if updates[field_name]:
-            getlist[field_name] = [updates[field_name]]
-        else:
-            if field_name in getlist:
-                del getlist[field_name]
-
-    # Repopulate fields that are related to models (and have a pk)
-    for field_name in [
-        'cu_client',
-        'ta_staff_member', 'ta_client', 'ta_funding_source',
-        'loan_client', 'loan_funding_source',
-    ]:
-        if updates[field_name]:
-            getlist[field_name] = [updates[field_name].pk]
-        else:
-            if field_name in getlist:
-                del getlist[field_name]
-
-    if updates['loan_tag']:
-        getlist['loan_tag'].append(updates['loan_tag'].pk)
-
-    if updates['remove_loan_tag']:
-        getlist['loan_tag'] = [
-            tag_id for tag_id in getlist['loan_tag'] if str(tag_id) != str(updates['remove_loan_tag'])
-        ]
-    if len(getlist['loan_tag']) == 0:
-        del getlist['loan_tag']
-
-    for kind in ['loan', 'ta', 'cu']:
-        if (updates[kind + '_property'] and
-                updates[kind + '_operator'] and
-                updates[kind + '_propvalue']):
-            getlist[kind + '_attribute'].append(','.join([
-                updates[kind + '_property'],
-                updates[kind + '_operator'],
-                updates[kind + '_propvalue'],
-            ]))
-        else:
-            if kind + '_property' in getlist:
-                del getlist[kind + '_property']
-            if kind + '_operator' in getlist:
-                del getlist[kind + '_operator']
-            if kind + '_propvalue' in getlist:
-                del getlist[kind + '_propvalue']
-
-        if updates['remove_' + kind + '_attribute']:
-            getlist[kind + '_attribute'] = [
-                attr for attr in getlist[kind + '_attribute'] if attr != updates['remove_' + kind + '_attribute']
-            ]
-        if len(getlist[kind + '_attribute']) == 0:
-            del getlist[kind + '_attribute']
 
 
 def get_ordered_months_header(first_month):
