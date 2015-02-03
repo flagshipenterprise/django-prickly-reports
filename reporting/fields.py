@@ -1,3 +1,6 @@
+# Copyright 2015 Steven Barnett
+# This program is distributed under the terms of the Lesser GNU Public License
+
 from django.forms import Field, MultiValueField, ChoiceField, CharField, Widget
 from reporting.widgets import SelectNumericComparisonWidget
 from django.core.exceptions import ValidationError

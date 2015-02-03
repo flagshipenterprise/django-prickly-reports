@@ -1,3 +1,6 @@
+# Copyright 2015 Steven Barnett
+# This program is distributed under the terms of the Lesser GNU Public License
+
 from datetime import date
 from django.test import TestCase
 from django.forms import Form
