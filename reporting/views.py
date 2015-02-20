@@ -1,6 +1,3 @@
-# Copyright 2015 Steven Barnett
-# This program is distributed under the terms of the Lesser GNU Public License
-
 from django.views.generic import TemplateView
 from django.views.generic.base import TemplateResponseMixin, ContextMixin
 from django.views.generic.edit import ProcessFormView

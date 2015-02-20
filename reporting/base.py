@@ -1,6 +1,3 @@
-# Copyright 2015 Steven Barnett
-# This program is distributed under the terms of the Lesser GNU Public License
-
 from django import forms
 from django.http import QueryDict
 from django.forms.formsets import formset_factory

@@ -1,6 +1,3 @@
-# Copyright 2015 Steven Barnett
-# This program is distributed under the terms of the Lesser GNU Public License
-
 from django.http import HttpResponse
 from django.views.generic.base import View
 from django.core.exceptions import ImproperlyConfigured
