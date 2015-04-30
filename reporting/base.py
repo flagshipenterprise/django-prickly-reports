@@ -56,7 +56,7 @@ class Filter(object):
     def clean_data(self, name, raw_data):
         form = self.get_form_class(name)(data=raw_data)
         data = form.cleaned_data[name] if form.is_valid() else None
-        return data_type(data)
+        return self.data_type(data)
 
     def get_data(self, name, data):
         """
