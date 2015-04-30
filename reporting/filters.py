@@ -11,11 +11,11 @@ from reporting.fields import SelectNumericComparisonField
 
 class ChoiceFilter(Filter):
     form_field_class = forms.ChoiceField
-    blank_choice = BLANK_CHOICE_DASH
+    default_choices = []
 
-    def __init__(self, choices=[], **kwargs):
+    def __init__(self, choices=None, **kwargs):
         super(ChoiceFilter, self).__init__(**kwargs)
-        self.set_choices(choices)
+        self.set_choices(choices or self.default_choices)
 
     def set_choices(self, choices=[]):
 
