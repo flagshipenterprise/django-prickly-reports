@@ -27,7 +27,8 @@ class Filter(object):
                  form_field_class=None,
                  form_field_widget=None,
                  filter_set=False,
-                 filter_field=None):
+                 filter_field=None,
+                 data_type=None):
         self.default = default
         self.required = required
         self.label = label
@@ -36,6 +37,7 @@ class Filter(object):
         self.order = Filter._order.next()
         self.filter_set = filter_set
         self.filter_field = filter_field or self.filter_field
+        self.data_type = data_type or self.data_type
 
     def get_form_field(self):
         """
