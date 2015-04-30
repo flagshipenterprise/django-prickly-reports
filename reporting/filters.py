@@ -11,6 +11,7 @@ from reporting.fields import SelectNumericComparisonField
 
 class ChoiceFilter(Filter):
     form_field_class = forms.ChoiceField
+    blank_choices = BLANK_CHOICE_DASH
     default_choices = []
 
     def __init__(self, choices=None, **kwargs):
