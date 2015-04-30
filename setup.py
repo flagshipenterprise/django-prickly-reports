@@ -12,7 +12,7 @@ setup(
     version='0.11',
     packages=['reporting'],
     include_package_data=True,
-    license='BSD License',  # example license
+    license='MIT License',  # example license
     description='A small, generic, django app to generate data reports.',
     long_description=README,
     url='',
@@ -22,7 +22,7 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         # Replace these appropriately if you are stuck on Python 2.

@@ -18,6 +18,7 @@ class Filter(object):
     form_field_widget = None
     filter_state_names = ['%s', ]
     filter_field = ''
+    data_type = unicode
 
     def __init__(self,
                  default=None,
@@ -52,7 +53,8 @@ class Filter(object):
 
     def clean_data(self, name, raw_data):
         form = self.get_form_class(name)(data=raw_data)
-        return form.cleaned_data[name] if form.is_valid() else None
+        data = form.cleaned_data[name] if form.is_valid() else None
+        return data_type(data)
 
     def get_data(self, name, data):
         """
