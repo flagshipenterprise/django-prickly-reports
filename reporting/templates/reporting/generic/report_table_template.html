@@ -29,17 +29,6 @@
     </thead>
     {% endif %}
 
-    {#} Footers {#}
-    {% if report.get_footers %}
-    <tfoot>
-        <tr>
-            {% for footer in report.get_footers %}
-            <td>{{ footer }}</td>
-            {% endfor %}
-        </tr>
-    </tfoot>
-    {% endif %}
-
     {#} Data {#}
     <tbody>
         {% for row in report.get_rows %}
@@ -59,6 +48,17 @@
         </tr>
         {% endfor %}
     </tbody> 
+
+    {#} Footers {#}
+    {% if report.get_footers %}
+    <tfoot>
+        <tr>
+            {% for footer in report.get_footers %}
+            <td>{{ footer }}</td>
+            {% endfor %}
+        </tr>
+    </tfoot>
+    {% endif %}
 </table>
 
 {#} Export CSV {#}
