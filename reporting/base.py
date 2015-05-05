@@ -152,6 +152,7 @@ class Report(object):
     __metaclass__ = ABCMeta
 
     headers = None
+    footers = None
     title = None
 
     def __init__(self, filter_states={}):
@@ -262,6 +263,9 @@ class Report(object):
 
     def get_headers(self):
         return self.headers
+
+    def get_footers(self):
+        return self.footers
 
     def apply_filter(self, queryset, name):
         f = self.get_filter(name)

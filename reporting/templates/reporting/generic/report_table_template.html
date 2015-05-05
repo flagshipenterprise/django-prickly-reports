@@ -3,17 +3,6 @@
 {#} Overview {#}
 <table class="table table-striped table-condensed">
 
-    {#} Headers {#}
-    {% comment %}
-    <thead>
-        <tr>
-            {% for header in report.get_monthly_report_headers %}
-            <th>{{ header }}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    {% endcomment %}
-
     {#} Data {#}
     <tbody>
         {% for row in report.get_summary_rows %}
@@ -30,6 +19,7 @@
 <table class="table table-striped table-condensed">
 
     {#} Headers {#}
+    {% if report.get_headers %}
     <thead>
         <tr>
             {% for header in report.get_headers %}
@@ -37,6 +27,18 @@
             {% endfor %}
         </tr>
     </thead>
+    {% endif %}
+
+    {#} Footers {#}
+    {% if report.get_footers %}
+    <tfoot>
+        <tr>
+            {% for footer in report.get_footers %}
+            <td>{{ footer }}</td>
+            {% endfor %}
+        </tr>
+    </tfoot>
+    {% endif %}
 
     {#} Data {#}
     <tbody>
