@@ -23,7 +23,7 @@
     <thead>
         <tr>
             {% for header in report.get_headers %}
-            <th>{{ header }}</th>
+            <th>{% if header %}{{ header }}{% else %}&nbsp;{% endif %}</th>
             {% endfor %}
         </tr>
     </thead>
@@ -54,7 +54,7 @@
     <tfoot>
         <tr>
             {% for footer in report.get_footers %}
-            <td>{{ footer }}</td>
+            <td>{% if footer %}{{ footer }}{% else %}&nbsp;{% endif %}</td>
             {% endfor %}
         </tr>
     </tfoot>
