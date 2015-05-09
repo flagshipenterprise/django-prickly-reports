@@ -78,13 +78,18 @@ class PDFView(View):
             raise ImproperlyConfigured(
                 "A template_name must be specified for the rml template.")
 
+        context = self.get_context_data()
+
         # Use StringIO and not cStringIO because cStringIO can't accept unicode characters
         buf = StringIO()
-        rml = render_to_string(self.template_name, self.get_context_data())
+        rml = render_to_string(self.template_name, context)
+
 
         buf.write(rml)
         buf.seek(0)
         root = etree.parse(buf).getroot()
+        # Make the rml available in the context for testing purposes
+        context['rml'] = root
         doc = document.Document(root)
 
         response = HttpResponse(content_type='application/pdf')
