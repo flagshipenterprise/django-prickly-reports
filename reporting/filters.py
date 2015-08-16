@@ -31,7 +31,8 @@ class ChoiceFilter(Filter):
         return self.form_field_class(
             required=(self.required and not self.filter_set),
             choices=self.choices,
-            label=self.label)
+            label=self.label,
+            widget=self.form_field_widget)
 
     def apply_filter(self, queryset, data):
         filterspec = {self.filter_field: data}
