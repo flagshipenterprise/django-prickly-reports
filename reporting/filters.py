@@ -14,8 +14,9 @@ class ChoiceFilter(Filter):
     blank_choice = BLANK_CHOICE_DASH
     default_choices = []
 
-    def __init__(self, choices=None, **kwargs):
+    def __init__(self, choices=None, blank_choice=None, **kwargs):
         super(ChoiceFilter, self).__init__(**kwargs)
+        self.blank_choice = blank_choice or self.blank_choice
         self.set_choices(choices or self.default_choices)
 
     def set_choices(self, choices=[]):
