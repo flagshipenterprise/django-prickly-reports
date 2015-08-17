@@ -64,6 +64,10 @@ class DateFilter(Filter):
     form_field_class = forms.DateField
 
 
+class BooleanFilter(Filter):
+    form_field_class = forms.BooleanField
+
+
 class NumericComparisonFilter(Filter):
     form_field_class = SelectNumericComparisonField
     filter_state_names = ['%s_0', '%s_1', '%s_2', ]
