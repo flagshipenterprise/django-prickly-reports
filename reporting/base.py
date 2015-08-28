@@ -174,7 +174,6 @@ class Report(object):
         looks for the default value on the filter object. If that's not found
         either, then returns none.
         """
-
         # Perform the normal __getattribute__ call
         attr = object.__getattribute__(self, name)
 

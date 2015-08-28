@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.views.generic.base import TemplateResponseMixin, ContextMixin
 from django.views.generic.edit import ProcessFormView
+from django.template.defaultfilters import slugify
 from reporting.exports import CSVView
 
 
@@ -66,3 +67,6 @@ class ReportCSVView(CSVView):
 
     def get_headers(self):
         return self.report.get_headers()
+
+    def get_filename(self):
+        return '%s.csv' % slugify(self.report.get_title())
