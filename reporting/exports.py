@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.views.generic.base import View
 from django.core.exceptions import ImproperlyConfigured
 from django.template.loader import render_to_string
-import csv
+import unicodecsv as csv
 
 from lxml import etree
 from z3c.rml import document
